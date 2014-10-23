@@ -1,0 +1,180 @@
+<html>
+<head>
+	<title>Twenty-Four</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
+	<style>
+
+	table {
+		width: 80%;
+		margin-top: 200px;
+		margin: 0 auto;
+	}
+
+	.block {
+		width: 25%;
+		height: 200px;
+		font-size: 72px;
+	}
+
+	#buttons {
+		width: 500px;
+		margin: 0 auto;
+	}
+
+	#buttons button {
+		font-size: 48px;
+	}
+
+	#time-left {
+		padding: 30px;
+		font-size: 48px;
+	}
+
+	</style>
+</head>
+<body>
+	<table>
+	<tr>
+		<td class='block' id='block1'>.</td>
+		<td class='block' id='block2'>.</td>
+		<td class='block' id='block3'>.</td>
+		<td class='block' id='block4'>.</td>
+	</tr>
+	</table>
+	<div id="buttons">
+		<button class='spin'>Spin!</button>
+		<button class='solve'>Solve!</button>
+		<div id="time-left"></div>
+		<div id="solution"></div>
+	</div>
+	<script>
+		$(document).ready(function() { 
+			var block1 = $('#block1');
+			var block2 = $('#block2');
+			var block3 = $('#block3');
+			var block4 = $('#block4');
+
+			var blocks = [block1, block2, block3, block4];
+
+			function randval() { 
+				return Math.floor(Math.random() * 9) + 1;
+			}
+
+			var currentProblem = null;
+			var timeLeft = null;
+
+			function spin() {
+				var nextArr = [1];
+				while (!possible(nextArr)) {
+					nextArr = [randval(), randval(), randval(), randval()];
+				}
+				$('#solution').empty();
+				currentProblem = nextArr;
+				timeLeft = 30 + 1;
+				countdown();
+				block1.html(nextArr[0]);
+				block2.html(nextArr[1]);
+				block3.html(nextArr[2]);
+				block4.html(nextArr[3]);
+			};
+
+			function solve() {
+				timeLeft = 0;
+				$('#time-left').empty();
+				var solutionEl = $('#solution');
+				var solution = possible(currentProblem);
+				while (solution.length > 0) {
+					solutionEl.append($('<h1>' + solution.pop() + '</h1>'))
+				}
+			};
+
+			function countdown() {
+				if (timeLeft > 0) {
+					timeLeft--;
+					if (timeLeft == 0) {
+						$('#time-left').empty();
+						solve();
+					} else {
+						$('#time-left').html(timeLeft + " seconds");
+					}
+				}
+			}
+
+			setInterval(countdown, 1000);
+
+			$('.spin').click(spin);
+			$('.solve').click(solve);
+
+			plus    = function(a, b) { return a + b; }
+			minus   = function(a, b) { return a - b; }
+			times   = function(a, b) { return a * b; }
+			divides = function(a, b) { if (b == 0) { return 0; } else { return a / b; } }
+
+			plus.opstr = '+';
+			minus.opstr = '-';
+			times.opstr = '*';
+			divides.opstr = '/';
+
+			operations = [plus, minus, times, divides];
+
+			function possible(arr) {
+				if (arr.length == 1) {
+					if (arr[0] === 24) {
+						return [];
+					} else {
+						return false;
+					}
+				}
+				else {
+					for (var ii = 0; ii < arr.length; ii++) {
+						for (var jj = 0; jj < arr.length; jj++) {
+							if (ii == jj)
+								continue;
+							var first = arr[ii];
+							var second = arr[jj];
+							var rest = [];
+							for (var kk = 0; kk < arr.length; kk++) {
+								if (kk != ii && kk != jj) {
+									rest.push(arr[kk]);
+								}
+							}
+							for (var kk = 0; kk < operations.length; kk++) {
+								var operation = operations[kk];
+								var newval = operation(first, second);
+								nextArr = _.cloneDeep(rest);
+								nextArr.push(newval);
+								var solution = possible(nextArr);
+								if (solution) {
+									solution.push("" + first + " " + operation.opstr + " " + second + ' = ' + newval);
+									return solution;
+								}
+							}
+						}
+					}
+					return false;
+				}
+			}
+
+			function printsol(solution) {
+				if (solution === false) {
+					console.log("No solution.");
+				}
+				else {
+					while (solution.length > 0) {
+						console.log(solution.pop());
+					}
+					console.log("");
+				}
+			}
+
+			spin();
+
+			printsol(possible([1, 1, 1, 1]));
+			printsol(possible([6, 6, 6, 6]));
+			printsol(possible([3, 3, 7, 7]));
+			printsol(possible([8, 6, 1, 6]));
+		});
+	</script>
+</body>
+</html>
