@@ -5,30 +5,67 @@
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
 	<style>
 
+	body {
+		background-color: #aabbff;
+		font-family: "Helvetica Neue";
+	}
+
 	table {
-		width: 80%;
+		width: 50%;
 		margin-top: 200px;
 		margin: 0 auto;
+		border-spacing: 10px;
 	}
 
 	.block {
-		width: 25%;
+		background-color: #eeeeff;
 		height: 200px;
-		font-size: 72px;
+		width: 100px;
+		text-align: center;
+		font-size: 144px;
+		border-radius: 10px;
 	}
 
 	#buttons {
-		width: 500px;
 		margin: 0 auto;
+		width: 30%;
 	}
 
 	#buttons button {
+		padding: 10px 0;
 		font-size: 48px;
+		width: 100%;
+		margin-top: 10px;
 	}
 
 	#time-left {
 		padding: 30px;
 		font-size: 48px;
+	}
+
+	#meta {
+		width: 30%;
+		margin: 0 auto;
+		margin-top: 10px;
+		background-color: #eeeeff;
+		border-radius: 10px;
+	}
+
+	#meta #time-left {
+		font-size: 72px;
+		text-align: center;
+	}
+
+	#solution {
+		padding: 10px;
+		margin: 10px 0;
+	}
+
+	#meta #solution h1 {
+		margin: 0px;
+		font-size: 48px;
+		padding: 10px;
+		text-align: center;
 	}
 
 	</style>
@@ -38,13 +75,22 @@
 	<tr>
 		<td class='block' id='block1'>.</td>
 		<td class='block' id='block2'>.</td>
+	</tr>
+	<tr>
 		<td class='block' id='block3'>.</td>
 		<td class='block' id='block4'>.</td>
 	</tr>
+
 	</table>
-	<div id="buttons">
-		<button class='spin'>Spin!</button>
-		<button class='solve'>Solve!</button>
+	<div id='buttons'>
+		<div>
+			<button class='spin'>Spin</button>
+		</div>
+		<div>
+			<button class='solve'>Solve</button>
+		</div>
+	</div>
+	<div id="meta">
 		<div id="time-left"></div>
 		<div id="solution"></div>
 	</div>
@@ -70,6 +116,7 @@
 					nextArr = [randval(), randval(), randval(), randval()];
 				}
 				$('#solution').empty();
+				$('#solution').hide()
 				currentProblem = nextArr;
 				timeLeft = 30 + 1;
 				countdown();
@@ -81,8 +128,9 @@
 
 			function solve() {
 				timeLeft = 0;
-				$('#time-left').empty();
+				$('#time-left').hide();
 				var solutionEl = $('#solution');
+				solutionEl.empty().show()
 				var solution = possible(currentProblem);
 				while (solution.length > 0) {
 					solutionEl.append($('<h1>' + solution.pop() + '</h1>'))
@@ -93,10 +141,12 @@
 				if (timeLeft > 0) {
 					timeLeft--;
 					if (timeLeft == 0) {
+						$('#time-left').hide();
 						$('#time-left').empty();
 						solve();
 					} else {
-						$('#time-left').html(timeLeft + " seconds");
+						$('#time-left').show();
+						$('#time-left').html(timeLeft);
 					}
 				}
 			}
@@ -113,7 +163,7 @@
 
 			plus.opstr = '+';
 			minus.opstr = '-';
-			times.opstr = '*';
+			times.opstr = 'x';
 			divides.opstr = '/';
 
 			operations = [plus, minus, times, divides];
