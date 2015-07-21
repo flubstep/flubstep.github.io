@@ -263,11 +263,11 @@
 
 			setInterval(countdown, 1000);
 
-			$('.block').click(selectblock);
-			$('.operand').click(selectoperand);
-			$('.reset').click(resetproblem);
-			$('.spin').click(spin);
-			$('.solve').click(solve);
+			$('.block').bind('touchstart', selectblock);
+			$('.operand').bind('touchstart', selectoperand);
+			$('.reset').bind('touchstart', resetproblem);
+			$('.spin').bind('touchstart', spin);
+			$('.solve').bind('touchstart', solve);
 
 			plus    = function(a, b) { return a + b; }
 			minus   = function(a, b) { return a - b; }
