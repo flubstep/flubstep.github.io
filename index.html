@@ -264,11 +264,11 @@
 
 			setInterval(countdown, 1000);
 
-			$('.block').bind('tap', selectblock);
-			$('.operand').bind('tap', selectoperand);
-			$('.reset').bind('tap', resetproblem);
-			$('.spin').bind('tap', spin);
-			$('.solve').bind('tap', solve);
+			$('.block').bind('press', selectblock);
+			$('.operand').bind('press', selectoperand);
+			$('.reset').bind('press', resetproblem);
+			$('.spin').bind('press', spin);
+			$('.solve').bind('press', solve);
 
 			plus    = function(a, b) { return a + b; }
 			minus   = function(a, b) { return a - b; }
