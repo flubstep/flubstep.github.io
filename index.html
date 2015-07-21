@@ -2,6 +2,7 @@
 <head>
 	<title>Twenty-Four</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.4/hammer.min.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.js"></script>
 	<style>
 
@@ -263,11 +264,11 @@
 
 			setInterval(countdown, 1000);
 
-			$('.block').bind('touchstart', selectblock);
-			$('.operand').bind('touchstart', selectoperand);
-			$('.reset').bind('touchstart', resetproblem);
-			$('.spin').bind('touchstart', spin);
-			$('.solve').bind('touchstart', solve);
+			$('.block').bind('tap', selectblock);
+			$('.operand').bind('tap', selectoperand);
+			$('.reset').bind('tap', resetproblem);
+			$('.spin').bind('tap', spin);
+			$('.solve').bind('tap', solve);
 
 			plus    = function(a, b) { return a + b; }
 			minus   = function(a, b) { return a - b; }
